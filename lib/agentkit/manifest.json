@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.0",
+  "product": "pipmcp",
+  "credential": "PIPMCP_API_KEY",
+  "skills": [
+    {
+      "name": "pipmcp-zoho-crm",
+      "description": "Connect AI agents to Zoho CRM using one PipMCP API key and actual hosted tool discovery."
+    }
+  ],
+  "files": {
+    "skills/pipmcp-zoho-crm/SKILL.md": "e2740440dba8b5f217ada9e478431fda5922597800a40591c2cf3e25db4bc947"
+  }
+}

@@ -1,21 +1,38 @@
 {
   "name": "zoho-crm-mcp",
-  "version": "0.2.0",
-  "description": "Review lead records and explicitly create an authorized new lead in a US-region CRM.",
+  "version": "1.0.0",
   "type": "module",
   "license": "MIT",
+  "description": "Use Zoho CRM with AI agents through one PipMCP API key, actual hosted schemas and governed execution.",
   "engines": {
     "node": ">=22"
+  },
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.mjs"
+    }
   },
   "bin": {
     "zoho-crm-mcp": "server.mjs"
   },
   "scripts": {
     "start": "node example.mjs",
+    "doctor": "node doctor.mjs",
     "server": "node server.mjs",
     "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.4.0"
-  }
+  },
+  "files": [
+    "lib",
+    "server.mjs",
+    "doctor.mjs",
+    "example.mjs",
+    "README.md",
+    "LICENSE",
+    "capabilities.json",
+    "docs"
+  ]
 }

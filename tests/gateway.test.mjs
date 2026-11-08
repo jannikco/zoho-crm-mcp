@@ -1,0 +1,8 @@
+import test from'node:test';
+import assert from'node:assert/strict';
+import{execFileSync}from'node:child_process';
+import{PipMCPGatewayClient}from'../lib/index.mjs';
+import{existsSync,readFileSync}from'node:fs';
+test('real operations require the PipMCP key and never use a provider fallback',()=>{assert.throws(()=>new PipMCPGatewayClient({apiKey:''}),/PIPMCP_API_KEY|key/);for(const file of['connector.json','selected-openapi.json','local-auth','lib/runtime'])assert.equal(existsSync(file),false,file);});
+test('authenticated transport uses only the fixed private gateway',async()=>{let seen;const client=new PipMCPGatewayClient({apiKey:'pmk_synthetic_fixture_key',fetchImpl:async(url,init)=>{seen={url,init};return new Response(JSON.stringify({data:{connector_id:"zoho-crm",integration_id:'fixture',connection_id:'fixture',tools:[{name:'actual_fixture_tool',inputSchema:{type:'object'},readOnly:true}]}}),{headers:{'content-type':'application/json'}});}});const receipt=await client.getTools("zoho-crm");assert.equal(new URL(seen.url).origin,'https://pipmcp.com');assert.equal(seen.init.headers.Authorization,'Bearer pmk_synthetic_fixture_key');assert.equal(receipt.data.tools[0].name,'actual_fixture_tool');});
+test('default quickstart is an offline plan and agent capability is honest',()=>{const plan=JSON.parse(execFileSync(process.execPath,['example.mjs'],{encoding:'utf8',env:{...process.env,PIPMCP_API_KEY:''}}));assert.match(plan.mode,/offline|dry-run/);const cap=JSON.parse(readFileSync('capabilities.json'));assert.equal(cap.credential,'PIPMCP_API_KEY');assert.equal(cap.verification.providerExecution,'Documented');});

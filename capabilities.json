@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "zoho-crm-mcp",
+  "version": "1.0.0",
+  "product": "pipmcp",
+  "artifactType": "Hosted connector client",
+  "credential": "PIPMCP_API_KEY",
+  "connectorId": "zoho-crm",
+  "executionAuthority": "https://pipmcp.com/api/v1",
+  "inventory": "authenticated-dynamic",
+  "verification": {
+    "transport": "Tested",
+    "providerExecution": "Documented"
+  },
+  "skills": [
+    "pipmcp-zoho-crm"
+  ],
+  "offlineMode": "plan-and-fixtures-only",
+  "historicalVersions": "Older MIT local runtimes remain in Git history"
+}

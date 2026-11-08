@@ -1,8 +1,3 @@
 #!/usr/bin/env node
-import {readFile} from 'node:fs/promises';
-import {startServer} from './lib/runtime/index.js';
-import {resolveCredential} from './local-auth/index.mjs';
-const index=process.argv.indexOf('--manifest');
-const file=index<0?new URL('./connector.json',import.meta.url):process.argv[index+1];
-const connector=JSON.parse(await readFile(file,'utf8'));
-startServer(connector,{credentialResolver:manifest=>resolveCredential(manifest)});
+import{PipMCPGatewayClient,startBridge}from'./lib/index.mjs';
+try{new PipMCPGatewayClient();const connectorId="zoho-crm";if(connectorId==='custom-api'&&!process.env.PIPMCP_INTEGRATION_ID)throw new Error('Set PIPMCP_INTEGRATION_ID to the reviewed, published private API integration.');startBridge({connectorId,integrationId:process.env.PIPMCP_INTEGRATION_ID,connectionId:process.env.PIPMCP_CONNECTION_ID});}catch(error){console.error(JSON.stringify({ok:false,error:{code:error.code??'setup_required',message:error.message}}));process.exitCode=1;}

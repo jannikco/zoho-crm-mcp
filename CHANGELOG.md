@@ -1,5 +1,5 @@
 # Changelog
 
-##0.2.0
+## 1.0.0
 
-Direct-provider MCP tools with local execution, explicit write approvals and fixture/stdio tests.
+Authenticated private execution, actual schema discovery, durable receipts, task skills and one PipMCP API key. Historical local runtimes remain in Git history.

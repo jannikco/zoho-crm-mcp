@@ -1,0 +1,8 @@
+# Zoho CRM MCP server
+
+- [Quick start](README.md)
+- [Capabilities](capabilities.json)
+- [Agent instructions](AGENTS.md)
+- [Task skill](.agents/skills/pipmcp-zoho-crm/SKILL.md)
+
+Actual operations require a scoped PipMCP API key and hosted configuration.

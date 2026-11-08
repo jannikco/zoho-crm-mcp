@@ -2,304 +2,59 @@
   "schemaVersion": 1,
   "id": "zoho-crm-mcp",
   "kind": "provider-connector",
-  "artifactType": "connector",
-  "qualityVersion": 2,
+  "product": "pipmcp",
   "title": "Zoho CRM MCP server",
-  "description": "Review lead records and explicitly create an authorized new lead in a US-region CRM.",
+  "description": "Use Zoho CRM with AI agents through one PipMCP API key, actual hosted schemas and governed execution.",
   "status": "ready",
   "verification": "mock-only",
   "releaseEligible": true,
+  "operationIds": [],
   "maintainer": "jannikco",
   "license": "MIT",
-  "product": "pipmcp",
-  "appSlug": "zoho-crm",
-  "appName": "Zoho CRM",
-  "operationIds": [
-    "zoho_list_leads",
-    "zoho_create_lead"
-  ],
-  "sourceRevision": "de1311c207902b2d9930b4dc0112e757f8fda067f2d6e9e446f205de0c74cf19",
+  "attributionSlug": "github-zoho-crm-mcp",
+  "sourceRevision": "23e89b386b952714f9650d4ed299fe9fb7b9ce5535379b6f5a5f1c44c93bcf5a",
+  "qualityVersion": 2,
+  "artifactType": "connector",
   "evidence": [
-    "Actual tools/call and direct-provider request contract tests"
+    "Gateway HTTP transport fixtures",
+    "Generated stdio wrapper discovery/call fixtures"
   ],
   "provenance": [
     "https://raw.githubusercontent.com/zoho/crm-oas/main/v8.0/record/record.yaml"
   ],
-  "attributionSlug": "github-zoho-crm-mcp",
-  "connectorId": "zoho-crm",
-  "connector": {
-    "id": "zoho-crm",
-    "name": "Zoho CRM",
-    "version": "0.1.0",
-    "baseUrl": "https://www.zohoapis.com/crm/v8",
-    "auth": {
-      "type": "header",
-      "env": "ZOHO_CRM_ACCESS_TOKEN",
-      "header": "Authorization",
-      "prefix": "Zoho-oauthtoken "
-    },
-    "tools": [
-      {
-        "name": "zoho_list_leads",
-        "description": "Read a page of leads with an explicit field selection.",
-        "method": "GET",
-        "path": "/Leads",
-        "readOnly": true,
-        "approvalRequired": false,
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "page": {
-              "type": "integer",
-              "minimum": 1
-            },
-            "per_page": {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 100
-            },
-            "fields": {
-              "type": "string",
-              "minLength": 1
-            }
-          },
-          "required": [
-            "fields"
-          ],
-          "additionalProperties": false
-        },
-        "bindings": {
-          "path": [],
-          "query": {
-            "page": "page",
-            "per_page": "per_page",
-            "fields": "fields"
-          },
-          "body": {}
-        },
-        "sampleArguments": {
-          "page": 1,
-          "per_page": 10,
-          "fields": "Last_Name,Company,Email"
-        },
-        "evidence": {
-          "state": "documented",
-          "providerLiveValidation": "not-run"
-        },
-        "provenance": [
-          "https://raw.githubusercontent.com/zoho/crm-oas/main/v8.0/record/record.yaml"
-        ]
-      },
-      {
-        "name": "zoho_create_lead",
-        "description": "Create one lead; CRM-specific mandatory fields and validation still apply.",
-        "method": "POST",
-        "path": "/Leads",
-        "readOnly": false,
-        "approvalRequired": true,
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "records": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "Last_Name": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "Company": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "Email": {
-                    "type": "string",
-                    "format": "email"
-                  },
-                  "First_Name": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "required": [
-                  "Last_Name",
-                  "Company"
-                ],
-                "additionalProperties": false
-              },
-              "minItems": 1,
-              "maxItems": 1
-            }
-          },
-          "required": [
-            "records"
-          ],
-          "additionalProperties": false
-        },
-        "bindings": {
-          "path": [],
-          "query": {},
-          "body": {
-            "records": "data"
-          }
-        },
-        "sampleArguments": {
-          "records": [
-            {
-              "Last_Name": "Example",
-              "Company": "Sandbox Company",
-              "Email": "sandbox@example.com"
-            }
-          ]
-        },
-        "evidence": {
-          "state": "documented",
-          "providerLiveValidation": "not-run"
-        },
-        "provenance": [
-          "https://raw.githubusercontent.com/zoho/crm-oas/main/v8.0/record/record.yaml"
-        ]
-      }
-    ],
-    "workflow": {
-      "name": "Zoho CRM authorized workflow",
-      "description": "Review lead records and explicitly create an authorized new lead in a US-region CRM.",
-      "steps": [
-        "zoho_list_leads",
-        "zoho_create_lead"
-      ]
-    },
-    "provenance": [
-      "https://raw.githubusercontent.com/zoho/crm-oas/main/v8.0/record/record.yaml"
-    ],
-    "sourceEvidence": {
-      "state": "documented",
-      "providerLiveValidation": "not-run",
-      "checkedAt": "2026-11-08",
-      "operationCount": 2,
-      "kind": "official-reference",
-      "sha256": "5397f63e5beba143086bd2aec8789291b2a59474200b096bc7c5faecff12423a",
-      "sources": [
-        {
-          "url": "https://raw.githubusercontent.com/zoho/crm-oas/main/v8.0/record/record.yaml",
-          "sha256": "5397f63e5beba143086bd2aec8789291b2a59474200b096bc7c5faecff12423a",
-          "checkedAt": "2026-11-08T13:11:26.722430+00:00"
-        }
-      ]
-    },
-    "setup": {
-      "requiresPipMcpAccount": false,
-      "credentialsHelpUrl": "https://raw.githubusercontent.com/zoho/crm-oas/main/v8.0/record/record.yaml",
-      "instructions": "Supply a short-lived access token from your own Zoho OAuth app, ZohoCRM.modules.leads.READ/CREATE scopes. This manifest explicitly uses the US data center www.zohoapis.com. Tokens from other regions require a separately reviewed matching regional manifest; do not send them to this host. Creation can trigger configured Zoho workflows and notifications; review them before approving."
-    },
-    "sampleWarning": "Example IDs and email addresses are placeholders. Replace them with records and recipients you are authorized to access. Samples do not authorize writes. HTTP/fixture success does not prove provider execution or email delivery.",
-    "appSlug": "zoho-crm",
-    "repoId": "zoho-crm-mcp",
-    "product": "pipmcp",
-    "artifactType": "connector",
-    "sourceRevision": "de1311c207902b2d9930b4dc0112e757f8fda067f2d6e9e446f205de0c74cf19",
-    "capabilityEvidence": {
-      "local": {
-        "level": "Tested",
-        "operations": [
-          {
-            "name": "zoho_list_leads",
-            "level": "Tested",
-            "evidenceRefs": [
-              "Provider request/stdio contract tests"
-            ],
-            "method": "contract-fixture"
-          },
-          {
-            "name": "zoho_create_lead",
-            "level": "Tested",
-            "evidenceRefs": [
-              "Provider request/stdio contract tests"
-            ],
-            "method": "contract-fixture"
-          }
-        ],
-        "evidenceRefs": [
-          "Provider request/stdio contract tests"
-        ],
-        "mode": "local"
-      },
-      "managed": {
-        "level": "Documented",
-        "operations": [
-          {
-            "name": "zoho_list_leads",
-            "level": "Documented",
-            "evidenceRefs": [],
-            "method": "documentation"
-          },
-          {
-            "name": "zoho_create_lead",
-            "level": "Documented",
-            "evidenceRefs": [],
-            "method": "documentation"
-          }
-        ],
-        "evidenceRefs": [],
-        "mode": "managed"
-      }
-    },
-    "managedAvailability": {
-      "status": "import-required",
-      "integration": "openapi-to-mcp",
-      "checkedAt": "2026-11-08T13:20:45.156456+00:00"
-    }
+  "utility": {
+    "problem": "Review lead records and explicitly create an authorized new lead in a US-region CRM.",
+    "output": "Actual hosted tool schemas and durable governed execution receipts"
   },
+  "appSlug": "zoho-crm",
+  "appName": "Zoho CRM",
+  "connectorId": "zoho-crm",
+  "executionAuthority": "pipmcp-gateway",
+  "version": "1.0.0",
+  "agentReady": true,
   "capabilityEvidence": {
     "local": {
       "level": "Tested",
       "operations": [
         {
-          "name": "zoho_list_leads",
+          "name": "gateway_transport",
           "level": "Tested",
+          "method": "contract-fixture",
           "evidenceRefs": [
-            "Provider request/stdio contract tests"
-          ],
-          "method": "contract-fixture"
-        },
-        {
-          "name": "zoho_create_lead",
-          "level": "Tested",
-          "evidenceRefs": [
-            "Provider request/stdio contract tests"
-          ],
-          "method": "contract-fixture"
+            "Generated gateway/stdio fixtures"
+          ]
         }
       ],
       "evidenceRefs": [
-        "Provider request/stdio contract tests"
+        "Generated gateway/stdio fixtures"
       ],
       "mode": "local"
     },
     "managed": {
       "level": "Documented",
-      "operations": [
-        {
-          "name": "zoho_list_leads",
-          "level": "Documented",
-          "evidenceRefs": [],
-          "method": "documentation"
-        },
-        {
-          "name": "zoho_create_lead",
-          "level": "Documented",
-          "evidenceRefs": [],
-          "method": "documentation"
-        }
-      ],
+      "operations": [],
       "evidenceRefs": [],
       "mode": "managed"
     }
-  },
-  "utility": {
-    "problem": "Review lead records and explicitly create an authorized new lead in a US-region CRM.",
-    "output": "Actual provider API results through local MCP tools"
-  },
-  "providerDocs": "https://raw.githubusercontent.com/zoho/crm-oas/main/v8.0/record/record.yaml"
+  }
 }

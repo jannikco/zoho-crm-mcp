@@ -1,8 +1,4 @@
-/** Offline inspection by default; explicit --call uses your provider credentials. */
-import {readFile} from 'node:fs/promises';
-import {runTool} from './lib/runtime/index.js';
-import {resolveCredential} from './local-auth/index.mjs';
-const connector=JSON.parse(await readFile(new URL('./connector.json',import.meta.url),'utf8'));
-const index=process.argv.indexOf('--call');
-if(index<0)console.log(JSON.stringify({provider:connector.name,mode:'local',tools:connector.tools.map(t=>({name:t.name,description:t.description,readOnly:t.readOnly,example:t.sampleArguments})),workflow:connector.workflow},null,2));
-else {try{const result=await runTool(connector,process.argv[index+1],JSON.parse(process.argv[index+2]??'{}'),{credentialResolver:manifest=>resolveCredential(manifest)});console.log(JSON.stringify(result,null,2));}catch(error){console.error(JSON.stringify({code:error.code??'invalid_input',status:error.status??0}));process.exitCode=1;}}
+#!/usr/bin/env node
+import{discover}from'./doctor.mjs';
+if(!process.argv.includes('--live'))console.log(JSON.stringify({mode:'offline-plan',connectorId:"zoho-crm",credential:'PIPMCP_API_KEY',api:'https://pipmcp.com/api/v1',authentication:'not-tested',providerExecution:'not-run',next:'Configure your hosted integration and run npm run doctor with an authorized key.'},null,2));
+else try{console.log(JSON.stringify(await discover(),null,2));}catch(error){console.error(JSON.stringify({ok:false,error:{code:error.code??'setup_required',message:error.message}}));process.exitCode=1;}
