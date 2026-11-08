@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-11-08T11:56:32.387482+00:00",
+  "platform": "darwin",
+  "store": "macOS Keychain",
+  "roundtrip": "passed",
+  "steps": [
+    "save",
+    "readback-verification",
+    "load",
+    "delete",
+    "read-after-delete-refused"
+  ],
+  "realProviderTokensUsed": false,
+  "syntheticItemCleaned": true,
+  "accessPolicyChanged": false,
+  "linuxWindows": "fixture-tested-only"
+}

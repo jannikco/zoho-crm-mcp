@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile,mkdtemp,rm} from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import {runTool} from '../lib/runtime/index.js';
+import {argsFor,envFor} from './samples.mjs';
+const connector=JSON.parse(await readFile(new URL('../connector.json',import.meta.url),'utf8'));
+test('every bound tool actually issues a direct-provider request',async()=>{const stateDir=await mkdtemp(path.join(os.tmpdir(),'connector-test-'));try{for(const tool of connector.tools){let request;const args=argsFor(tool);if(!tool.readOnly)args._approval={approved:true,idempotencyKey:'fixture-'+tool.name};const result=await runTool(connector,tool.name,args,{env:envFor(connector),allowWrites:true,stateDir,fetch:async(url,init)=>{request={url,init};return new Response(JSON.stringify({fixture:true}),{headers:{'content-type':'application/json'}});}});assert.equal(result.data.fixture,true);assert.ok(request);assert.equal(request.init.method,tool.method);if(connector.id!=='linkedin')assert.notEqual(new URL(request.url).hostname,'pipmcp.com');assert.equal(request.init.redirect,'error');}}finally{await rm(stateDir,{recursive:true,force:true});}});
+test('writes cannot run without explicit opt-in',async()=>{for(const tool of connector.tools.filter(t=>!t.readOnly)){let called=false;await assert.rejects(runTool(connector,tool.name,argsFor(tool),{env:envFor(connector),fetch:async()=>{called=true;throw new Error('must not execute');}}));assert.equal(called,false);}});
